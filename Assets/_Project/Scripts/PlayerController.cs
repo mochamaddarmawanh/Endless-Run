@@ -41,28 +41,24 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.A))
         {
-            currentLane--;
-
-            if (currentLane < 0)
+            if (currentLane > 0)
             {
-                currentLane = 0;
-            }
+                currentLane--;
 
-            targetRotationZ = turnAngle * 0.5f;
-            targetRotationY = -turnAngle;
+                targetRotationZ = turnAngle * 0.5f;
+                targetRotationY = -turnAngle;
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
-            currentLane++;
-
-            if (currentLane > 2)
+            if (currentLane < 2)
             {
-                currentLane = 2;
-            }
+                currentLane++;
 
-            targetRotationZ = -turnAngle * 0.5f;
-            targetRotationY = turnAngle;
+                targetRotationZ = -turnAngle * 0.5f;
+                targetRotationY = turnAngle;
+            }
         }
     }
 
