@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Lane Movement")]
+    [SerializeField] private int laneCount = 3;
     [SerializeField] private float laneDistance = 3f;
     [SerializeField] private float laneChangeSpeed = 10f;
     private Vector3 moveDirection;
@@ -52,7 +53,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
         {
-            if (currentLane < 2)
+            if (currentLane < laneCount - 1)
             {
                 currentLane++;
 
@@ -66,18 +67,9 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 targetPosition = transform.position;
 
-        if (currentLane == 0)
-        {
-            targetPosition.x = -laneDistance;
-        }
-        else if (currentLane == 1)
-        {
-            targetPosition.x = 0;
-        }
-        else if (currentLane == 2)
-        {
-            targetPosition.x = laneDistance;
-        }
+        float middleLane = (laneCount - 1) / 2f;
+
+        targetPosition.x = (currentLane - middleLane) * laneDistance;
 
         Vector3 moveVector = targetPosition - transform.position;
 
