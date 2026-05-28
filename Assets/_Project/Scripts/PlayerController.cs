@@ -10,6 +10,12 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce = 7f;
     [SerializeField] private float gravity = -20f;
 
+    [Header("Turn")]
+    [SerializeField] private float turnAngle = 50f;
+    [SerializeField] private float turnSpeed = 8f;
+    private float targetRotationY;
+    private float targetRotationZ;
+
     private CharacterController characterController;
 
     private Vector3 moveDirection;
@@ -26,6 +32,7 @@ public class PlayerController : MonoBehaviour
         HandleLaneInput();
         HandleMovement();
         HandleJump();
+        HandleRotation();
     }
 
     private void HandleLaneInput()
@@ -38,6 +45,9 @@ public class PlayerController : MonoBehaviour
             {
                 currentLane = 0;
             }
+
+            targetRotationZ = turnAngle * 0.5f;
+            targetRotationY = -turnAngle;
         }
 
         if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D))
@@ -48,6 +58,9 @@ public class PlayerController : MonoBehaviour
             {
                 currentLane = 2;
             }
+
+            targetRotationZ = -turnAngle * 0.5f;
+            targetRotationY = turnAngle;
         }
     }
 
@@ -94,5 +107,32 @@ public class PlayerController : MonoBehaviour
         }
 
         characterController.Move(moveDirection * Time.deltaTime);
+    }
+
+    private void HandleRotation()
+    {
+        Quaternion targetRotation = Quaternion.Euler(
+            0,
+            targetRotationY,
+            targetRotationZ
+        );
+
+        transform.rotation = Quaternion.Lerp(
+            transform.rotation,
+            targetRotation,
+            turnSpeed * Time.deltaTime
+        );
+
+        targetRotationZ = Mathf.Lerp(
+            targetRotationZ,
+            0,
+            turnSpeed * Time.deltaTime
+        );
+
+        targetRotationY = Mathf.Lerp(
+            targetRotationY,
+            0,
+            turnSpeed * Time.deltaTime
+        );
     }
 }
