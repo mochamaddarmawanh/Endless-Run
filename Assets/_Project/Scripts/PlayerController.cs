@@ -5,6 +5,8 @@ public class PlayerController : MonoBehaviour
     [Header("Lane Movement")]
     [SerializeField] private float laneDistance = 3f;
     [SerializeField] private float laneChangeSpeed = 10f;
+    private Vector3 moveDirection;
+    private int currentLane = 1;
 
     [Header("Jump")]
     [SerializeField] private float jumpForce = 7f;
@@ -16,15 +18,15 @@ public class PlayerController : MonoBehaviour
     private float targetRotationY;
     private float targetRotationZ;
 
+    [Header("Player Components")]
     private CharacterController characterController;
+    private Animator animator;
 
-    private Vector3 moveDirection;
-
-    private int currentLane = 1;
 
     private void Start()
     {
         characterController = GetComponent<CharacterController>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -92,6 +94,8 @@ public class PlayerController : MonoBehaviour
         {
             moveDirection.y = -1f;
 
+            animator.SetBool("Jump", false);
+
             if (
                 Input.GetKeyDown(KeyCode.Space) ||
                 Input.GetKeyDown(KeyCode.W) ||
@@ -99,6 +103,8 @@ public class PlayerController : MonoBehaviour
             )
             {
                 moveDirection.y = jumpForce;
+
+                animator.SetBool("Jump", true);
             }
         }
         else
